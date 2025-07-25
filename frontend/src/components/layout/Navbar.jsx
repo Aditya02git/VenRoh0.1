@@ -1,0 +1,230 @@
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "../../lib/axios";
+import { Link } from "react-router-dom";
+import { Bell, Home, LogOut, User, Users, Search, MessageSquareMore, Wallet } from "lucide-react";
+import { IoHomeOutline } from "react-icons/io5";
+import { FcAbout } from "react-icons/fc";
+import { MdHomeRepairService } from "react-icons/md";
+import { LuMessageSquareWarning } from "react-icons/lu";
+import { FaUserTie } from "react-icons/fa6";
+import { MdOutlineConnectWithoutContact } from "react-icons/md";
+import { useEffect, useState } from "react";
+
+
+const Navbar = () => {
+
+
+   const { data:authUser } = useQuery({ queryKey: ["authUser"], });
+//bug founded
+
+//   const { data: authUser } = useQuery({
+//   queryKey: ["authUser"],
+//   queryFn: async () => {
+//     const response = await axiosInstance.get("/auth/user");
+//     return response.data;
+//   },
+// });//code changed due to 'No Query function passed' error.
+
+//   const queryClient = useQueryClient();//helps after logout if refresh the page so that users information can removed
+
+  const { data: notifications } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async() => axiosInstance.get("/notifications"),
+    enabled: !!authUser,
+  })
+
+  const {data: connectionRequests } = useQuery({
+    queryKey: ["connectionRequests"],
+    queryFn: async() => axiosInstance.get("/connections/requests"),
+    enabled: !!authUser,
+  });
+
+  //Mutation function is used for logout
+//   const { mutate: logout } = useMutation({
+//     mutationFn: () => axiosInstance.post("/auth/logout"),
+//     		onSuccess: () => {
+// 			queryClient.invalidateQueries({ queryKey: ["authUser"] });//refresh the data
+// 		},
+//   });
+
+  // console.log("notifications", notifications);
+  // console.log("connectionRequests", connectionRequests);
+
+  const unreadNotificationCount = notifications?.data.filter((notif) => !notif.read).length;
+  const unreadConnectionRequestsCount = connectionRequests?.data?.length;
+
+    const [sticky, setSticky] = useState(true);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      if (currentScroll <= 0) {
+        // At top, always show navbar
+        setSticky(true);
+      } else if (currentScroll > lastScrollTop) {
+        // Scrolling down
+        setSticky(false);
+      } else {
+        // Scrolling up
+        setSticky(true);
+      }
+
+      setLastScrollTop(currentScroll);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollTop]);
+
+
+return (
+		<nav  className={`bg-[rgba(8,8,8,0.95)] shadow-[1px_1px_20px_rgba(0,0,0,0.5)] sticky top-0 z-10 transition-all duration-300 ease-in-out ${
+        sticky ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+      }`}
+    >
+			<div className='max-w-7xl mx-auto px-4'>
+				<div className='flex justify-between items-center py-3'>
+					<div className='flex items-center space-x-4'>
+						<Link to='/' className="flex flex-row gap-3">
+							<img className='h-8 rounded' src='' alt='N/A' />
+							<h1 className="text-white">MVP Website</h1>
+						</Link>
+					</div>
+					<div className='flex items-center gap-2 md:gap-6'>
+						{authUser ? (
+							<>
+								<Link to={"/"} className='text-neutral flex flex-col items-center'>
+									<Home size={20} className="text-white"/>
+									<span className='text-xs hidden md:block text-white'>Home</span>
+								</Link>
+								<Link
+									to='/search'
+									className='text-neutral flex flex-col items-center'
+								>
+									<Search size={20} className="text-white"/>
+									<span className='text-xs hidden md:block text-white'>Search</span>
+								</Link>								
+								<Link
+									to='/message'
+									className='text-neutral flex flex-col items-center'
+								>
+									<MessageSquareMore size={20} className="text-white"/>
+									<span className='text-xs hidden md:block text-white'>Message</span>
+								</Link>								
+								<Link to='/network' className='text-neutral flex flex-col items-center relative'>
+									<Users size={20} className="text-white"/>
+									<span className='text-xs hidden md:block text-white'>Connections</span>
+									{unreadConnectionRequestsCount > 0 && (
+										<span
+											className='absolute -top-1 -right-1 md:right-4 bg-blue-500 text-white text-xs 
+										rounded-full size-3 md:size-4 flex items-center justify-center'
+										>
+											{unreadConnectionRequestsCount}
+										</span>
+									)}
+								</Link>
+								<Link to='/notifications' className='text-neutral flex flex-col items-center relative'>
+									<Bell size={20} className="text-white"/>
+									<span className='text-xs hidden md:block text-white'>Notifications</span>
+									{unreadNotificationCount > 0 && (//true
+										<span
+											className='absolute -top-1 -right-1 md:right-4 bg-blue-500 text-white text-xs 
+										rounded-full size-3 md:size-4 flex items-center justify-center'
+										>
+											{unreadNotificationCount}
+											{/* ex-3,4,5 */}
+										</span>
+									)}
+								</Link>
+								<Link
+									to={`/profile/${authUser.username}`}
+									className='text-neutral flex flex-col items-center'
+								>
+									<User size={20} className="text-white"/>
+									<span className='text-xs hidden md:block text-white'>Update Profile</span>
+								</Link>
+
+								{/* <button
+									className='flex dropdown dropdown-hover items-center space-x-1 text-sm text-white bg-[radial-gradient(circle,_rgba(63,_94,_251,_1)_0%,_rgba(252,_70,_107,_1)_100%)] p-2 rounded-md border-2 border-blue-700'
+								>
+									<div tabIndex={0} role="button" className="flex btn m-1">
+									<span className='hidden md:inline'>Credits</span>
+									<Wallet size={20} />
+									<span className='hidden md:inline font-bold'>{authUser.credit}</span>
+									  <ul tabIndex={0} className=" dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+											<li><a>Item 1</a></li>
+											<li><a>Item 2</a></li>
+									  </ul>
+									  </div>
+								</button> */}
+								<div className="dropdown dropdown-hover">
+								<div tabIndex={0} role="button" className="btn m-1 text-white bg-[radial-gradient(circle,_rgba(63,_94,_251,_1)_0%,_rgba(252,_70,_107,_1)_100%)] p-2 rounded-md border-2 border-blue-700 transition-all duration-300 hover:text-gray-400">
+									Credits
+									<Wallet size={20} />
+									<span className='font-bold'>{authUser.credit}</span>
+									</div>
+								<ul tabIndex={0} className="dropdown-content menu bg-[#F5F5DC] hover:bg-[#d0d0ba] rounded-box z-1 w-52 p-2 shadow-sm">
+									<Link to={'/myplans'}>My Plans</Link>
+								</ul>
+								</div>
+								
+							</>
+						) : (
+							<>
+							<div className="flex flex-row gap-[60px]">
+								<Link to='/landing' className=''>
+
+									<IoHomeOutline className="text-white"/>
+									
+
+								</Link>
+								<Link to='/about' className=''>
+
+									<LuMessageSquareWarning className="text-white"/>
+	
+								</Link>
+								<Link to='/service' className=''>
+		
+									<MdHomeRepairService className="text-white"/>
+				
+								</Link>
+								<Link to='/portfoliostats' className=''>
+					
+									<FaUserTie className="text-white"/>
+			
+								</Link>
+								<Link to='/contactus' className=''>
+						
+									<MdOutlineConnectWithoutContact className="text-white"/>
+		
+								</Link>
+								</div>
+								<div className="w-px h-10 bg-gray-300"></div>
+
+
+								<Link to='/login' className='bg-white rounded-md'>
+								<button className="
+								btn btn-neutral btn-outline rounded-md">
+									Log In
+								</button>	
+								</Link>
+								<Link to='/signup' className='btn btn-ghost text-white border-white hover:text-black'>
+									Sign Up
+								</Link>
+							</>
+						)}
+					</div>
+				</div>
+			</div>
+		</nav>
+	);
+};
+export default Navbar;
+
+//to do: 1) messaging system 
+//       2) credits
+//       3)My plan
+//       4)OSE(Optimized Search Engine)

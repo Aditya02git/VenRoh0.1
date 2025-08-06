@@ -8,6 +8,21 @@ import SignUpPage from "./pages/auth/SignUpPage";
 import LoginPage from "./pages/auth/LoginPage";
 import toast, { Toaster } from "react-hot-toast";
 
+// Second login
+import Login from "./pages/login/Login";
+// Second signup
+import SignUp from "./pages/signup/SignUp_1";
+
+// New role-based sign-up pages
+import Idea from "./pages/signup/Idea";
+import Startup from "./pages/signup/Startup";
+import Investor from "./pages/signup/Investor";
+import VC from "./pages/signup/VC";
+
+import Terms from "./pages/WORKING/Terms";
+
+
+
 import NotificationsPage from "./pages/NotificationsPage";
 import NetworkPage from "./pages/NetworkPage";
 import PostPage from "./pages/PostPage";
@@ -19,18 +34,16 @@ import Success from "./pages/payment/Success";
 import Failure from "./pages/payment/Failure";
 import MessagePage from "./pages/MessagePage";
 
-import { useAuthStore } from "./store/useAuthStore"; 
+import { useAuthStore } from "./store/useAuthStore";
 import { Loader } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "./lib/axios";
 import SettingsPage from "./pages/SettingsPage";
 import About from "./pages/LandingPage/About.jsx";
 import Services from "./pages/LandingPage/Services.jsx";
-import PortfolioStats from "./pages/LandingPage/PortfolioStats.jsx";
 import Contact from "./pages/LandingPage/Contact.jsx";
 
 const App = () => {
-
   const { data: authUser, isLoading } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
@@ -65,22 +78,35 @@ const App = () => {
   return (
     <Layout>
       <Routes>
+        {/* Default Route */}
         <Route
           path="/"
           element={authUser ? <HomePage /> : <Navigate to="/landing" />}
         />
-        {/* <Route
-          path="/landing"
-          element={!authUser ? <LandingPage /> : <Navigate to="/" />}
-        /> */}
+
+        {/* Landing Page */}
+        <Route path="/landing" element={<LandingPage />} />
+
+        {/* Auth Pages */}
         <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to="/form" />}
+          element={!authUser ? <SignUp /> : <Navigate to="/form" />}
         />
         <Route
           path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          element={!authUser ? <Login /> : <Navigate to="/" />}
         />
+
+        {/* Role-specific SignUp pages */}
+        <Route path="/idea" element={<Idea/>} />
+        <Route path="/startup" element={<Startup/>} />
+        <Route path="/investor" element={<Investor/>} />
+        <Route path="/vc" element={<VC/>} />
+
+         <Route path="/terms" element={<Terms />} />
+       
+
+        {/* Authenticated Pages */}
         <Route
           path="/form"
           element={authUser ? <FormPage /> : <Navigate to="/login" />}
@@ -117,11 +143,11 @@ const App = () => {
           path="/message"
           element={authUser ? <MessagePage /> : <Navigate to="/login" />}
         />
+
+        {/* General Pages */}
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/landing" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/service" element={<Services />} />
-        <Route path="/portfoliostats" element={<PortfolioStats />} />
         <Route path="/contactus" element={<Contact />} />
       </Routes>
       <Toaster />

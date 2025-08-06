@@ -37,38 +37,7 @@ const Contact = () => {
             <p className="text-black">123 Venture Blvd, San Francisco, CA</p>
           </div>
         </div>
-
-        {/* Contact Form */}
-        <form className="bg-white rounded-3xl shadow-lg p-8 md:p-12 max-w-4xl mx-auto space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <input
-              type="text"
-              placeholder="Your Name"
-              className="w-full px-4 py-3 border border-yellow-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-            />
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="w-full px-4 py-3 border border-yellow-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-            />
-          </div>
-          <input
-            type="text"
-            placeholder="Subject"
-            className="w-full px-4 py-3 border border-yellow-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-          />
-          <textarea
-            rows="5"
-            placeholder="Your Message"
-            className="w-full px-4 py-3 border border-yellow-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-          />
-          <button
-            type="submit"
-            className="bg-yellow-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-yellow-700 transition"
-          >
-            Send Message
-          </button>
-        </form>
+       
       </div>
     </section>
   );

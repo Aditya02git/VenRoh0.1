@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 import './SignUpStyles.css';
 
 const SignUp_1 = () => {
@@ -10,18 +11,14 @@ const SignUp_1 = () => {
   const handleSelection = (role) => {
     setSelectedRole(role);
 
-    if (role === "I have a Startup Idea") {
-      navigate("/idea");
-    }
-    if (role === "I am a Startup Founder") {
-      navigate("/startup");
-    }
-    if (role === "I am an Investor") {
-      navigate("/investor");
-    }
-    if (role === "I own a Venture Capital Firm") {
-      navigate("/vc");
-    }
+    if (role === "I have a Startup Idea") navigate("/idea");
+    if (role === "I am a Startup Founder") navigate("/startup");
+    if (role === "I am an Investor") navigate("/investor");
+    if (role === "I own a Venture Capital Firm") navigate("/vc");
+  };
+
+  const handleBack = () => {
+    window.history.back();
   };
 
   return (
@@ -32,14 +29,25 @@ const SignUp_1 = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <motion.h1
-          className="signup-title"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          Let's Get Started!
-        </motion.h1>
+        <div className="signup-header">
+          <motion.button
+            className="back-button-icon"
+            onClick={handleBack}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaArrowLeft className="back-icon-rem" />
+          </motion.button>
+
+          <motion.h1
+            className="signup-title"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            Let's Get Started!
+          </motion.h1>
+        </div>
 
         <motion.p
           className="signup-subtitle"

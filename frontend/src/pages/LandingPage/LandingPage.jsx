@@ -1,7 +1,5 @@
 import React from 'react';
 import HeroSection from './HeroSection';
-import Services from './Services';
-import About from './About';
 import Contact from './Contact';
 import Footer from './Footer';
 
@@ -11,9 +9,7 @@ const LandingPage = () => {
      
       {/* Main Content */}
       <div className="flex-grow">
-        <HeroSection />
-        <Services />
-        <About />
+        <HeroSection/>            
         <Contact />
       </div>
 

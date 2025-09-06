@@ -1,20 +1,57 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { account } from '@appwrite'; // 👈 import centralized Appwrite config
 import './LoginStyles.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  // ✅ Login with Appwrite
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login attempted with:', { email, password });
+    setLoading(true);
+    try {
+      // Create a session
+      await account.createEmailPasswordSession(email, password);
+
+      // Fetch logged-in user
+      const user = await account.get();
+      console.log('✅ Logged in as:', user);
+
+      // You can redirect to dashboard here
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('❌ Login failed:', err);
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSignUp = () => {
-    // Handle sign up logic here
-    console.log('Sign up clicked');
+  // ✅ Signup with Appwrite
+  const handleSignUp = async () => {
+    setLoading(true);
+    try {
+      // Generate a random ID for new user
+      const user = await account.create(
+        'unique()', // auto ID
+        email,
+        password
+      );
+      console.log('✅ User created:', user);
+
+      // Auto login after signup
+      await account.createEmailSession(email, password);
+      const loggedUser = await account.get();
+      console.log('✅ Signed in as:', loggedUser);
+    } catch (err) {
+      console.error('❌ Signup failed:', err);
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,11 +109,12 @@ const Login = () => {
           <motion.button
             type="submit"
             className="login-button"
+            disabled={loading}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
-            Login
+            {loading ? 'Loading...' : 'Login'}
           </motion.button>
         </motion.form>
 
@@ -99,13 +137,14 @@ const Login = () => {
         <motion.button
           onClick={handleSignUp}
           className="signup-button"
+          disabled={loading}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          Sign up
+          {loading ? 'Loading...' : 'Sign up'}
         </motion.button>
       </motion.div>
     </div>

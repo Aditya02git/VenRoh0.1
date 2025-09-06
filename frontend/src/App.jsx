@@ -20,6 +20,12 @@ import Investor from "./pages/signup/Investor";
 import VC from "./pages/signup/VC";
 
 import Terms from "./pages/WORKING/Terms";
+import TermsStartup from "./pages/WORKING/TermsStartup";
+import TermsInvestor from "./pages/WORKING/TermsInvestor";
+import TermsVC from "./pages/WORKING/TermsVC";
+
+// Dashboard User Profile
+import Dashboard from "./dashboard/Dashboard.jsx";
 
 
 
@@ -39,8 +45,6 @@ import { Loader } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "./lib/axios";
 import SettingsPage from "./pages/SettingsPage";
-import About from "./pages/LandingPage/About.jsx";
-import Services from "./pages/LandingPage/Services.jsx";
 import Contact from "./pages/LandingPage/Contact.jsx";
 
 const App = () => {
@@ -104,6 +108,12 @@ const App = () => {
         <Route path="/vc" element={<VC/>} />
 
          <Route path="/terms" element={<Terms />} />
+         <Route path="/termsStartup" element={<TermsStartup/>} />
+         <Route path="/termsInvestor" element={<TermsInvestor/>} />
+         <Route path="/termsVC" element={<TermsVC/>} />
+         
+         {/* Dashboard Page for user profile */}
+         <Route path="/dashboard" element={<Dashboard/>} />
        
 
         {/* Authenticated Pages */}
@@ -146,8 +156,6 @@ const App = () => {
 
         {/* General Pages */}
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/service" element={<Services />} />
         <Route path="/contactus" element={<Contact />} />
       </Routes>
       <Toaster />

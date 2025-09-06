@@ -157,7 +157,7 @@ const testimonials = [
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 ">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-200 rounded-full opacity-20 blur-3xl animate-pulse"></div>
@@ -194,20 +194,20 @@ const testimonials = [
             </div>
 
             {/* Stats */}
-<div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-  {stats.map((stat, index) => (
-    <div key={index} className="text-center">
-      <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-        {stat.prefix || ''}{counters[index] || 0}{stat.suffix || ''}
-      </div>
-      <div className="text-sm text-gray-600">{stat.label}</div>
-    </div>
-  ))}
-</div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+                    {stat.prefix || ''}{counters[index] || 0}{stat.suffix || ''}
+                  </div>
+                  <div className="text-sm text-gray-600">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Visual Diagram */}
-          <div className="relative">
+          <div className="relative hidden lg:block">
             <div className="relative w-full h-96 flex items-center justify-center">
               {/* Central Hub */}
               <div className="absolute inset-0 flex items-center justify-center">
@@ -224,7 +224,7 @@ const testimonials = [
                 </div>
                 
                 {/* Startups */}
-                <div className="absolute top-1/2 right-8 transform -translate-y-1/2 w-16 h-16 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center shadow-md">
+                <div className="absolute top-1/2 right-30 transform -translate-y-1/2 w-16 h-16 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center shadow-md">
                   <TrendingUp className="h-8 w-8 text-white" />
                 </div>
                 
@@ -234,7 +234,7 @@ const testimonials = [
                 </div>
                 
                 {/* VCs */}
-                <div className="absolute top-1/2 left-8 transform -translate-y-1/2 w-16 h-16 bg-gradient-to-br from-red-400 to-pink-500 rounded-full flex items-center justify-center shadow-md">
+                <div className="absolute top-1/2 left-30 transform -translate-y-1/2 w-16 h-16 bg-gradient-to-br from-red-400 to-pink-500 rounded-full flex items-center justify-center shadow-md">
                   <Users className="h-8 w-8 text-white" />
                 </div>
               </div>
@@ -278,13 +278,13 @@ const testimonials = [
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4">
               <span className="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-md">Ideas</span>
             </div>
-            <div className="absolute top-1/2 right-0 transform translate-x-4 -translate-y-1/2">
+            <div className="absolute top-1/2 right-10 transform translate-x-4 -translate-y-1/2">
               <span className="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-md">Startups</span>
             </div>
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-4">
               <span className="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-md">Investors</span>
             </div>
-            <div className="absolute top-1/2 left-0 transform -translate-x-4 -translate-y-1/2">
+            <div className="absolute top-1/2 left-17 transform -translate-x-4 -translate-y-1/2">
               <span className="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-md">VCs</span>
             </div>
           </div>
